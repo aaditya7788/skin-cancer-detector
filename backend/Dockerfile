@@ -12,8 +12,8 @@ COPY app.py .
 COPY classes.json .
 COPY skin_disease_resnet50_weights.pth .
 
-# Expose port
+# Expose port (Render will set PORT env variable)
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application using PORT environment variable
+CMD uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}
