@@ -11,9 +11,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 COPY classes.json .
 COPY skin_disease_resnet50_weights.pth .
+COPY entrypoint.py .
 
-# Expose port (Render will set PORT env variable)
+# Make entrypoint executable
+RUN chmod +x entrypoint.py
+
+# Expose port
 EXPOSE 8000
 
-# Run the application using PORT environment variable
-CMD uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}
+# Run with Python entrypoint that handles PORT env variable
+CMD ["python", "entrypoint.py"]
