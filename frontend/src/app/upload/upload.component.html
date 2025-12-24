@@ -1,0 +1,58 @@
+<div class="container">
+  <h2>🔬 Skin Disease Detection</h2>
+
+  <div class="upload-section">
+    <!-- Option Buttons -->
+    <div class="option-buttons">
+      <label class="file-upload-btn">
+        📁 Upload Image
+        <input type="file" (change)="onFileChange($event)" accept="image/*" style="display: none;" />
+      </label>
+      <button class="camera-btn" (click)="startCamera()" [disabled]="showCamera">
+        📷 Use Camera
+      </button>
+    </div>
+
+    <!-- Camera View -->
+    <div *ngIf="showCamera" class="camera-view">
+      <video #videoElement autoplay playsinline></video>
+      <button class="capture-btn" (click)="capturePhoto()">📸 Capture</button>
+      <button class="cancel-btn" (click)="stopCamera()">✖️ Cancel</button>
+    </div>
+
+    <!-- Canvas for image capture (hidden) -->
+    <canvas #canvasElement style="display: none;"></canvas>
+
+    <!-- Preview captured/uploaded image -->
+    <div *ngIf="capturedImage" class="image-preview">
+      <img [src]="capturedImage" alt="Captured image" />
+      <button class="retake-btn" (click)="retakePhoto()">🔄 Retake</button>
+    </div>
+
+    <div *ngIf="selectedFile && !capturedImage" class="file-info">
+      ✅ File selected: {{ selectedFile.name }}
+    </div>
+    
+    <br />
+    
+    <button class="predict-btn" (click)="predict()" [disabled]="loading || !selectedFile">
+      {{ loading ? 'Analyzing...' : 'Predict' }}
+    </button>
+  </div>
+
+  <div *ngIf="result" class="result-section">
+    <h3>✅ Result</h3>
+    <div class="result-card">
+      <p><strong>Prediction:</strong> {{ result.prediction }}</p>
+      <p><strong>Confidence:</strong> {{ result.confidence }}%</p>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-section">
+    ❌ {{ error }}
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ This is an AI-assisted tool and not a medical diagnosis. Always consult a healthcare professional.
+  </div>
+</div>
